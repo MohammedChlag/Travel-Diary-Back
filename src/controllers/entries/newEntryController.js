@@ -22,8 +22,10 @@ export const newEntryController = async (req, res, next) => {
 		const { title, place, description } = req.body;
 
 		// 3. Obtener las fotos del body
-		// const photos = req.files; // Si lo hago así estoy guardando un objeto con las fotos
-		const photos = Object.values(req.files); // Si lo hago así estoy guardando un array con las fotos
+		let photos = [];
+		if (req.files) {
+			photos = Object.values(req.files);
+		}
 
 		// Permitimos 3 fotos como máximo
 		if (photos.length > 3) {

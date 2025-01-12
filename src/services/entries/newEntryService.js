@@ -1,3 +1,5 @@
+import crypto from 'crypto';
+
 import { insertEntryModel } from '../../models/entries/insertEntryModel.js';
 import { generateErrorUtils } from '../../utils/helpersUtils.js';
 

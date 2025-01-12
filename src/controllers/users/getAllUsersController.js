@@ -1,6 +1,6 @@
-import { getAllUsersService } from "../../services/users/getAllUsersService.js";
+import { getAllUsersService } from '../../services/users/getAllUsersService.js';
 
-export const selectAllUsersController = async (req, res, next) => {
+export const getAllUsersController = async (req, res, next) => {
 	// Tareas:
 	// 1. Obtener todos los usuarios de la base de datos. Lo va a hacer el Service
 	// 2. Enviar los usuarios al cliente

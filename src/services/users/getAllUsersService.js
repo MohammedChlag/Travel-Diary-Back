@@ -1,5 +1,5 @@
 import { selectAllusersModel } from '../../models/users/selectAllusersModel.js';
-import { generateErrorUtils } from '../../utils/helpers.js';
+import { generateErrorUtils } from '../../utils/helpersUtils.js';
 
 export const getAllUsersService = async () => {
 	// Tareas:

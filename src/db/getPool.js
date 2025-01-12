@@ -1,38 +1,43 @@
-import mysql from 'mysql2/promise'
+import mysql from 'mysql2/promise';
 
-import {MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE, MYSQL_PORT} from '../../env.js'
+import {
+	MYSQL_HOST,
+	MYSQL_USER,
+	MYSQL_PASSWORD,
+	MYSQL_DATABASE,
+	MYSQL_PORT,
+} from '../../env.js';
 
 let pool = null;
 
-export const getPool = async ()=>{
-    try {
-        if(!pool){
-                // CREAR POOL TEMPORAL SIN DEPENDER DE LA DDBB
-            const poolTem = mysql.createPool({
-                host:MYSQL_HOST,
-                user: MYSQL_USER,
-                password: MYSQL_PASSWORD,
-                port: MYSQL_PORT || 3306,
-            })
-            
-                // CREAMOS LA DDBB SI NO EXISTE
-            await poolTem.query(`CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE}`)
+export const getPool = async () => {
+	try {
+		if (!pool) {
+			// Crear un pool temporal sin depender de la DDBB
+			const poolTemp = mysql.createPool({
+				host: MYSQL_HOST,
+				user: MYSQL_USER,
+				password: MYSQL_PASSWORD,
+				port: MYSQL_PORT || 3306,
+			});
 
-                // CREAMOS LA CONEXION
-            pool = mysql.createPool({                
-                host:MYSQL_HOST,
-                user: MYSQL_USER,
-                password: MYSQL_PASSWORD,
-                database: MYSQL_DATABASE,
-                port: MYSQL_PORT || 3306,
-                connectionLimit: 10,
-                timezone: 'Z',
-            })
-        }
-        
-        return pool;
+			// Crear la DDBB si no existe
+			await poolTemp.query(`CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE}`);
 
-    } catch (error) {
-        console.log('Error al obtener la conexión ⛓️‍💥');
-    }
+			// Crear la conexión con la DDBB
+			pool = mysql.createPool({
+				host: MYSQL_HOST,
+				user: MYSQL_USER,
+				password: MYSQL_PASSWORD,
+				database: MYSQL_DATABASE,
+				port: MYSQL_PORT || 3306,
+				connectionLimit: 10,
+				timezone: 'Z',
+			});
+		}
+
+		return pool;
+	} catch (error) {
+		console.error('Error al obtener el pool de conexiones');
+	}
 };

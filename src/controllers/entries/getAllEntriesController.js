@@ -1,6 +1,6 @@
-import { getAllEntriesService } from "../../services/entries/getAllEntriesService.js";
+import { getAllEntriesService } from '../../services/entries/getAllEntriesService.js';
 
-export const selectAllEntriesController = async (req, res, next) => {
+export const getAllEntriesController = async (req, res, next) => {
 	// Tareas:
 	// 1. Obtener todas las entradas de la base de datos. Lo va a hacer el Service
 	// 2. Enviar las entradas al cliente

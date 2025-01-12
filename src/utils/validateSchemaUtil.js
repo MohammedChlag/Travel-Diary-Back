@@ -1,4 +1,4 @@
-import { generateErrorUtils } from "./helpers.js";
+import { generateErrorUtils } from './helpersUtils.js';
 
 export const validateSchemaUtil = async (schema, data) => {
 	try {

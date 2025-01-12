@@ -1,5 +1,5 @@
 import { editEntryService } from '../../services/entries/editEntryService.js';
-import { generateErrorUtils } from '../../utils/helpers.js';
+import { generateErrorUtils } from '../../utils/helpersUtils.js';
 
 export const editEntryController = async (req, res, next) => {
 	// Tareas:

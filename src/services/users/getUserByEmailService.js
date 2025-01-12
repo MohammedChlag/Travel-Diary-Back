@@ -1,5 +1,4 @@
 import { selectUserByEmailModel } from '../../models/users/selectUserByEmailModel.js';
-import { generateErrorUtils } from '../../utils/helpers.js';
 
 export const getUserByEmailService = async (email) => {
 	// Tareas:

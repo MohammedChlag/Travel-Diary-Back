@@ -1,4 +1,4 @@
-import { generateErrorUtils } from '../utils/helpers.js';
+import { generateErrorUtils } from '../utils/helpersUtils.js';
 
 export const canDoItMiddleware = async (req, res, next) => {
 	// Tareas:
@@ -16,16 +16,28 @@ export const canDoItMiddleware = async (req, res, next) => {
 			req.body.value <= 5 &&
 			idUserLogged === idUserEntry
 		) {
-			throw generateErrorUtils(403,'FORBIDDEN','No puedes votar tu propia entrada');
+			throw generateErrorUtils(
+				403,
+				'FORBIDDEN',
+				'No puedes votar tu propia entrada'
+			);
 		} else if (req.method === 'DELETE') {
 			// Permitir si el usuario es el dueño o es admin
 			if (idUserLogged !== idUserEntry && roleUserLogged !== 'admin') {
-				throw generateErrorUtils(403,'FORBIDDEN','No tienes permisos para eliminar esta entrada');
+				throw generateErrorUtils(
+					403,
+					'FORBIDDEN',
+					'No tienes permisos para eliminar esta entrada'
+				);
 			}
 		} else {
 			// Para cualquier otro método, permitir solo si es el dueño
 			if (idUserLogged !== idUserEntry) {
-				throw generateErrorUtils(403,'FORBIDDEN','No tienes permisos para realizar esta acción');
+				throw generateErrorUtils(
+					403,
+					'FORBIDDEN',
+					'No tienes permisos para realizar esta acción'
+				);
 			}
 		}
 

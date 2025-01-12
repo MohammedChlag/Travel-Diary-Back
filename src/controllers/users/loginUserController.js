@@ -1,21 +1,30 @@
-import { loginUserSchema } from "../../schemas/users/loginUserSchema.js";
-import { loginUserService } from "../../services/users/loginUserService.js";
-import { generateErrorUtils } from "../../utils/helpers.js";
-import { validateSchemaUtil } from "../../utils/validateSchemaUtil.js";
+import { loginUserSchema } from '../../schemas/users/loginUserSchema.js';
+import { loginUserService } from '../../services/users/loginUserService.js';
+import { validateSchemaUtil } from '../../utils/validateSchemaUtil.js';
 
 export const loginUserController = async (req, res, next) => {
-    try {
-        // Validar los datos
-        await validateSchemaUtil(loginUserSchema, req.body)
-        const { email, password } = req.body;
+	// Tareas:
+	// 1. Recoger datos del body
+	// 2. Validar si hay datos
+	// 3. Comprobar si el usuario existe. Lo haremos en el servicio
+	// 4. Comprobar si la contraseña es correcta. Lo haremos en el servicio
+	// 5. Generar token. Lo haremos en el servicio
+	// 6. Enviar respuesta
+	try {
+		const { email, password } = req.body;
 
-        // Llamar al servicio de login.
-        const token = await loginUserService(email, password);
+		// Validar si hay datos
+		await validateSchemaUtil(loginUserSchema, req.body);
 
-        // Devuelve el token
-        res.status(200).send({ status: 'ok', message: 'Login exitoso', data: {token} });
+		// Llamar al service que loguea al usuario. Devuelve el token
+		const token = await loginUserService(email, password);
+		// const token = 'token';
 
-    } catch (error) {
-    next(error);
-    }
+		// Enviar respuesta
+		res
+			.status(200)
+			.send({ status: 'ok', message: 'User logged', data: { token } });
+	} catch (error) {
+		next(error);
+	}
 };

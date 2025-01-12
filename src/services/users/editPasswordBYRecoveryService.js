@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 
 import { selectUserByEmailModel } from '../../models/users/selectUserByEmailModel.js';
 import { updatePasswordByRecoveryModel } from '../../models/users/updatePasswordByRecoveryModel.js';
-import { generateErrorUtils } from '../../utils/helpers.js';
+import { generateErrorUtils } from '../../utils/helpersUtils.js';
 
 export const editPasswordBYRecoveryService = async (
 	email,
@@ -21,7 +21,11 @@ export const editPasswordBYRecoveryService = async (
 	const user = await selectUserByEmailModel(email);
 
 	// 2. Comprobar que el recoveryPassCode del usuario encontrado es igual al recoveryPassCode del body
-	if (!user || !recoveryPassCode || user.recoveryPassCode !== recoveryPassCode) {
+	if (
+		!user ||
+		!recoveryPassCode ||
+		user.recoveryPassCode !== recoveryPassCode
+	) {
 		throw generateErrorUtils(409, 'Email o código de recuperación incorrectos');
 	}
 

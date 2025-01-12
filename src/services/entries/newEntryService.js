@@ -1,18 +1,32 @@
-import crypto from 'crypto';
-import { generateErrorUtils } from '../../utils/helpers.js';
-import { insertNewEntryModel } from '../../models/entries/insertNewEntryModel.js';
+import { insertEntryModel } from '../../models/entries/insertEntryModel.js';
+import { generateErrorUtils } from '../../utils/helpersUtils.js';
 
 export const newEntryService = async (entry) => {
+	// Tareas:
+	// 1. Crear la id de la entrada con crypto.randomUUID()
+	// 2. Crear una entrada en la base de datos. Lo haremos con el modelo. Si no se ha podido insertar, lanzar un error
+	// 3. Devolver la entrada creada
 
-    // Tareas:
-    // 1. Crear el id de la entry con crypto.RandomUUID()
-    const id = crypto.randomUUID();
-    // 2. Crear la entrada en la base de datos, lo hará el Model
-    const resut = await insertNewEntryModel({id,...entry})
-    if (resut.affectedRows !== 1) {
-        throw generateErrorUtils(500, 'ERROR_CREATING_ENTRY', 'Error al crear la entrada');             
-    }
-    
-    // 3. Devuelve la entry creada
-    return {id,...entry};
+	// 1. Crear la id de la entrada con crypto.randomUUID()
+	const id = crypto.randomUUID();
+
+	// 2. Crear una entrada en la base de datos
+	const result = await insertEntryModel({
+		id,
+		...entry,
+	});
+
+	if (result.affectedRows !== 1) {
+		throw generateErrorUtils(
+			500,
+			'ENTRY_NOT_CREATED',
+			'No se ha podido crear la entrada'
+		);
+	}
+
+	// 3. Devolver la entrada creada
+	return {
+		id,
+		...entry,
+	};
 };

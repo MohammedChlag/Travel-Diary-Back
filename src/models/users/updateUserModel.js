@@ -1,10 +1,20 @@
-import { getPool } from "../../db/getPool.js";
+import { getPool } from '../../db/getPool.js';
 
-export const updateUserModel = async (id, cleanUserInfo) => {
+export const updateUserModel = async (id, info) => {
+	// Tareas:
+	// 1. Conectar con la base de datos
+	// 2. Realizar la consulta
+	// 3. Devolver el resultado
 
-    // Query para actualizar los datos del usuario en la BD
-    const pool = await getPool()
-    const [result] = await pool.query('UPDATE users SET username =?, firstName =?, lastName =?, email =? WHERE id =?', [cleanUserInfo.username, cleanUserInfo.firstName, cleanUserInfo.lastName, cleanUserInfo.email, id]);
+	// Conectar con la base de datos
+	const pool = await getPool();
 
-    return result;
+	// Realizar la consulta
+	const [result] = await pool.query(
+		`UPDATE users SET username = ?, firstName = ?, lastName = ?, email = ? WHERE id = ?`,
+		[info.username, info.firstName, info.lastName, info.email, id]
+	);
+
+	// Devolver el resultado
+	return result;
 };

@@ -1,5 +1,4 @@
 import { updateEntryModel } from '../../models/entries/updateEntryModel.js';
-import { generateErrorUtils } from '../../utils/helpers.js';
 
 export const editEntryService = async (newEntry) => {
 	// Tareas:

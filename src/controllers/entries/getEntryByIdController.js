@@ -1,3 +1,4 @@
+import { getEntryByIdService } from '../../services/entries/getEntryByIdService.js';
 
 export const getEntryByIdController = async (req, res, next) => {
 	// Tareas:

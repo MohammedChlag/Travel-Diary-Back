@@ -1,5 +1,5 @@
-import { createEntryPhotosService } from '../../services/photos/createEntryPhotosService.js';
-import { generateErrorUtils } from '../../utils/helpers.js';
+import { newPhotosService } from '../../services/photos/newPhotosService.js';
+import { generateErrorUtils } from '../../utils/helpersUtils.js';
 
 export const newEntryPhotosController = async (req, res, next) => {
 	// Tareas:
@@ -25,10 +25,10 @@ export const newEntryPhotosController = async (req, res, next) => {
 		}
 
 		// 4. Añadir las fotos a la entrada
-		const photosResults = await createEntryPhotosService(
+		const photosResults = await newPhotosService(
 			entry.userId,
-			photos,
-			entry.id
+			entry.id,
+			photos
 		);
 
 		// 5. Responder al cliente

@@ -249,10 +249,3 @@ sharp('input.jpg')
 
 Es un módulo del core de Node.js que nos permite crear UUIDs con el método randomUUID().
 Un UUID es un identificador único universal que se utiliza para identificar de forma única a un objeto o entidad.
-
-servidor en marcha
-router
-middlewares
-controllers
-services
-models

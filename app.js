@@ -1,9 +1,9 @@
-import { server } from "./src/server.js";
-import { PORT } from "./env.js";
+import { server } from './src/server.js';
 
-// sudo lsof -i -P -n | grep LISTEN
-const puerto = PORT || 3000;
+import { PORT } from './env.js';
+
+const puerto = PORT || 3001;
 
 server.listen(puerto, () => {
-    console.log(`Server escuchando en el puerto ${puerto}...`);
+	console.log(`Servidor escuchando en el puerto: ${puerto}`);
 });

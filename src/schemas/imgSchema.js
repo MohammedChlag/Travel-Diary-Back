@@ -9,7 +9,8 @@ import { joiErrorMessages } from './joiErrorMessages.js';
 // mimetype: Es el tipo de archivo. Es una cadena, debe ser jpeg o png y es requerido.
 // size: Es el tamaño del archivo. Es un número, debe ser menor a 5 MB y es requerido.
 // unknown(true): Permite que el objeto tenga campos adicionales que no vamos a validar.
-export const imgSchema = joi.object({
+export const imgSchema = joi
+	.object({
 		name: joi.string().required().messages(joiErrorMessages),
 		mimetype: joi
 			.string()
@@ -18,4 +19,4 @@ export const imgSchema = joi.object({
 			.messages(joiErrorMessages),
 		size: joi.number().max(5000000).required().messages(joiErrorMessages),
 	})
-	.unknown(true); 
+	.unknown(true);

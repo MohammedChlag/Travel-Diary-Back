@@ -1,8 +1,8 @@
 import path from 'path';
 
 import { deleteEntryByIdModel } from '../../models/entries/deleteEntryByIdModel.js';
+import { deletePhotoByIdModel } from '../../models/photos/deletePhotoByIdModel.js';
 import { deletePathUtil } from '../../utils/foldersUtils.js';
-import { generateErrorUtils } from '../../utils/helpers.js';
 
 export const removeEntryService = async (entry) => {
 	// Tareas:

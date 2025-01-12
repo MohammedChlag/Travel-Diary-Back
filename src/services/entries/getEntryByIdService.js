@@ -1,6 +1,6 @@
 import { selectEntryByIdModel } from '../../models/entries/selectEntryByIdModel.js';
 import { selectPhotosByEntryIdModel } from '../../models/photos/selectPhotosByEntryIdModel.js';
-import { generateErrorUtils } from '../../utils/helpers.js';
+import { generateErrorUtils } from '../../utils/helpersUtils.js';
 
 export const getEntryByIdService = async (id) => {
 	// Tareas:

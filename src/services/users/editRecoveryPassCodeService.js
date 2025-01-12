@@ -1,7 +1,7 @@
 import randomstring from 'randomstring';
 
 import { updateRecoveryPassCodeModel } from '../../models/users/updateRecoveryPassCodeModel.js';
-import { generateErrorUtils } from '../../utils/helpers.js';
+import { generateErrorUtils } from '../../utils/helpersUtils.js';
 import { sendEmailBrevoUtil } from '../../utils/sendEmailBrevoUtil.js';
 
 export const editRecoveryPassCodeService = async (id, email) => {

@@ -1,24 +1,28 @@
-import jwt from "jsonwebtoken";
+import { generateErrorUtils } from './helpersUtils.js';
+import jwt from 'jsonwebtoken';
 
-import { generateErrorUtils } from "./helpers.js"
+export const checkExtractTokenUtils = (authorization) => {
+	// Comprobar si el token empieza por Bearer
+	if (!authorization.startsWith('Bearer')) {
+		throw generateErrorUtils(
+			401,
+			'INVALID_TOKEN_FORMAT',
+			'El formato del token es incorrecto'
+		);
+	}
 
+	// Extraer el token
+	const token = authorization.split(' ')[1];
 
-export const checkExtractTokenUtil = (authorization)=>{
-    if (!authorization.startsWith('Bearer')) {
-        throw generateErrorUtils(401, 'INVALID_AUTH_HEADER', 'La cabecera de autenticación no tiene el formato correcto');
-    }
+	return token;
+};
 
-    const token = authorization.split(' ')[1];
+export const verifyTokenPayloadUtils = (token, secret) => {
+	try {
+		const payload = jwt.verify(token, secret);
 
-    return token;
-}
-
-export const verifyTokenPayloadUtil = (token, secret)=>{
-    try {
-        const payload = jwt.verify(token, secret)
-        
-        return payload;
-    } catch (error) {
-        throw generateErrorUtils(401,'INVALID_TOKEN','Token invalido')
-    }
-}
+		return payload;
+	} catch (error) {
+		throw generateErrorUtils(401, 'INVALID_TOKEN', 'El token no es válido');
+	}
+};

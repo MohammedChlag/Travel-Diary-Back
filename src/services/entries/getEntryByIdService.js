@@ -1,5 +1,6 @@
 import { selectEntryByIdModel } from '../../models/entries/selectEntryByIdModel.js';
 import { selectPhotosByEntryIdModel } from '../../models/photos/selectPhotosByEntryIdModel.js';
+import { selectCompanionsByEntryIdModel } from '../../models/usersEntriesCompanions/selectCompanionsByEntryIdModel.js';
 import { generateErrorUtils } from '../../utils/helpersUtils.js';
 
 export const getEntryByIdService = async (id) => {
@@ -20,6 +21,9 @@ export const getEntryByIdService = async (id) => {
 
 	const photos = await selectPhotosByEntryIdModel(entry.id);
 	entry.photos = photos;
+
+	const companions = await selectCompanionsByEntryIdModel(entry.id);
+	entry.companions = companions;
 
 	return entry;
 };

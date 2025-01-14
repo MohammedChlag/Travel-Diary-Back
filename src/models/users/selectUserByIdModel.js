@@ -13,7 +13,7 @@ export const selectUserByIdModel = async (id) => {
 	// La primera son los resultados. Es un array con tantas posiciones como registros haya encontrado.
 	// La segunda es un array con información sobre la tabla
 	const [user] = await pool.query(
-		`SELECT id, email, password, firstName, lastName, role, avatar, createdAt FROM users WHERE id = ?`,
+		`SELECT id, email, password, firstName, lastName, role, avatar, createdAt FROM users WHERE id = ? AND active = 1`,
 		[id]
 	);
 

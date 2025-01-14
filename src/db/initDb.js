@@ -16,7 +16,7 @@ export const initDb = async () => {
 		// Borrar las tablas si existen
 		console.log('Borrando tablas existentes 🗑 📑');
 		await pool.query(
-			'DROP TABLE IF EXISTS photos,usersEntriesVotes,entries,users;'
+			'DROP TABLE IF EXISTS photos, usersEntriesVotes,entries,users;'
 		);
 		console.log('Tablas borradas ✅ 📑');
 
@@ -78,6 +78,32 @@ export const initDb = async () => {
         entryId CHAR(36) NOT NULL,
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updatedAt TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (entryId) REFERENCES entries(id) ON DELETE CASCADE
+      );
+    `);
+
+		await pool.query(`
+      CREATE TABLE usersEntriesCompanions (
+        id CHAR(36) PRIMARY KEY NOT NULL,
+        userId CHAR(36) NOT NULL,
+        entryId CHAR(36) NOT NULL,
+        UNIQUE (userId, entryId),
+        createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updatedAt TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (entryId) REFERENCES entries(id) ON DELETE CASCADE
+      );
+    `);
+
+		await pool.query(`
+      CREATE TABLE usersEntriesComments (
+        id CHAR(36) PRIMARY KEY NOT NULL,
+        userId CHAR(36) NOT NULL,
+        entryId CHAR(36) NOT NULL,
+        comment TEXT NOT NULL,
+        createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updatedAt TIMESTAMP DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE,
         FOREIGN KEY (entryId) REFERENCES entries(id) ON DELETE CASCADE
       );
     `);

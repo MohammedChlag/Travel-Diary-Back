@@ -11,6 +11,8 @@ import { editUserController } from '../controllers/users/editUserController.js';
 import { editPasswordUserController } from '../controllers/users/editPasswordUserController.js';
 import { sendRecoverPassController } from '../controllers/users/sendRecoverPassController.js';
 import { editPasswordByRecoveryController } from '../controllers/users/editPasswordByRecoveryController.js';
+import { getUserByIdController } from '../controllers/users/getUserByIdController.js';
+import { getOwnUserCompanionsController } from '../controllers/users/getOwnUserCompanionsController.js';
 
 export const usersRouter = express.Router();
 
@@ -35,3 +37,10 @@ usersRouter.put(
 
 usersRouter.post('/users/password/recover', sendRecoverPassController); // Ruta para recuperar la contraseña de un usuario
 usersRouter.put('/users/password/recover', editPasswordByRecoveryController); // Ruta para cambiar la contraseña de un usuario recuperada
+
+usersRouter.get(
+	'/users/companions',
+	authUserMiddleware,
+	getOwnUserCompanionsController
+);
+usersRouter.get('/users/:id', getUserByIdController); // Ruta para obtener los datos de un usuario

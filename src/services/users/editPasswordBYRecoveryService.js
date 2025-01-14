@@ -21,11 +21,7 @@ export const editPasswordBYRecoveryService = async (
 	const user = await selectUserByEmailModel(email);
 
 	// 2. Comprobar que el recoveryPassCode del usuario encontrado es igual al recoveryPassCode del body
-	if (
-		!user ||
-		!recoveryPassCode ||
-		user.recoveryPassCode !== recoveryPassCode
-	) {
+	if (!user || user.recoveryPassCode !== recoveryPassCode) {
 		throw generateErrorUtils(409, 'Email o código de recuperación incorrectos');
 	}
 

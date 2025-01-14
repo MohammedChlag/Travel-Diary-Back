@@ -6,12 +6,13 @@ import { getEntryByIdController } from '../controllers/entries/getEntryByIdContr
 import { editEntryController } from '../controllers/entries/editEntryController.js';
 import { newEntryPhotosController } from '../controllers/entries/newEntryPhotosController.js';
 import { removeEntryController } from '../controllers/entries/removeEntryController.js';
-import { removeEntryPhotoController } from '../controllers/entries/removeEntryPhotoController.js';
+import { removeEntryPhotosController } from '../controllers/entries/removeEntryPhotoController.js';
 import { newEntryVoteController } from '../controllers/entries/newEntryVoteController.js';
 
 import { authUserMiddleware } from '../middlewares/authUserMiddleware.js';
 import { entryExistsMiddleware } from '../middlewares/entryExistsMiddleware.js';
 import { canDoItMiddleware } from '../middlewares/canDoItMiddleware.js';
+import { newEntryCompanionController } from '../controllers/entries/newEntryCompanionController.js';
 
 export const entriesRouter = express.Router();
 
@@ -23,8 +24,6 @@ entriesRouter.get(
 	entryExistsMiddleware,
 	getEntryByIdController
 );
-
-// Actualizar una entrada
 entriesRouter.put(
 	'/entries/:id',
 	authUserMiddleware,
@@ -32,8 +31,6 @@ entriesRouter.put(
 	canDoItMiddleware,
 	editEntryController
 );
-
-// Eliminar una entrada
 entriesRouter.delete(
 	'/entries/:id',
 	authUserMiddleware,
@@ -42,7 +39,6 @@ entriesRouter.delete(
 	removeEntryController
 );
 
-// Añadir fotos a una entrada
 entriesRouter.post(
 	'/entries/:id/photos',
 	authUserMiddleware,
@@ -51,19 +47,25 @@ entriesRouter.post(
 	newEntryPhotosController
 );
 
-// Eliminar fotos de una entrada
 entriesRouter.delete(
 	'/entries/:id/photos',
 	authUserMiddleware,
 	entryExistsMiddleware,
 	canDoItMiddleware,
-	removeEntryPhotoController
+	removeEntryPhotosController
 );
 
-// Votar una entrada
 entriesRouter.post(
 	'/entries/:id/votes',
 	authUserMiddleware,
 	entryExistsMiddleware,
 	newEntryVoteController
+);
+
+entriesRouter.post(
+	'/entries/:id/companions',
+	authUserMiddleware, // Verifica que el usuario está autenticado
+	entryExistsMiddleware, // Verifica que la entrada existe
+	canDoItMiddleware, // Verifica que el usuario sea el propietario de la entrada
+	newEntryCompanionController // Añade los compañeros a la entrada
 );

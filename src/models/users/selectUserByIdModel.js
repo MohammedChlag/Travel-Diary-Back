@@ -47,5 +47,42 @@ export const selectUserByIdModel = async (id) => {
   );
 
   // Como id es único, solo habrá un registro por lo que nos quedamos con la primera posición
-  return user[0];
+  const userData = user[0];
+
+  // Crear un objeto para almacenar las entradas
+  const entries = {};
+
+  // Recorrer los resultados y agregar las entradas al objeto
+  user.forEach((row) => {
+    if (!entries[row.entryId]) {
+      entries[row.entryId] = {
+        id: row.entryId,
+        title: row.entryTitle,
+        place: row.entryPlace,
+        description: row.entryDescription,
+        createdAt: row.entryCreatedAt,
+        updatedAt: row.entryUpdatedAt,
+        companions: [],
+      };
+    }
+
+    // Agregar el compañero a la entrada
+    if (row.companionId) {
+      entries[row.entryId].companions.push({
+        id: row.companionId,
+        username: row.companionUsername,
+        firstName: row.companionFirstName,
+        lastName: row.companionLastName,
+        email: row.companionEmail,
+        avatar: row.companionAvatar,
+        createdAt: row.companionCreatedAt,
+        updatedAt: row.companionUpdatedAt,
+      });
+    }
+  });
+
+  // Agregar las entradas al objeto de usuario
+  userData.entries = Object.values(entries);
+
+  return userData;
 };

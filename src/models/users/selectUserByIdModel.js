@@ -1,88 +1,37 @@
 import { getPool } from "../../db/getPool.js";
 
 export const selectUserByIdModel = async (id) => {
-  // Tareas:
-  // 1. Conectar con la base de datos
-  // 2. Hacer la consulta con JOIN a entries y companions
-  // 3. Devolver el usuario
-
-  // Conectar con la base de datos
+  // Conectar a la base de datos
   const pool = await getPool();
 
-  // Al hacer un select, el resultado es un array con 2 posiciones
-  // La primera son los resultados. Es un array con tantas posiciones como registros haya encontrado.
-  // La segunda es un array con información sobre la tabla
+  // Realizar la consulta para obtener el usuario
   const [user] = await pool.query(
-    `
-      SELECT 
-        U.id, 
-        U.username, 
-        U.firstName, 
-        U.lastName, 
-        U.email, 
-        U.avatar, 
-        U.createdAt, 
-        U.updatedAt,
-        E.id AS entryId, 
-        E.title AS entryTitle, 
-        E.place AS entryPlace, 
-        E.description AS entryDescription, 
-        E.createdAt AS entryCreatedAt, 
-        E.updatedAt AS entryUpdatedAt,
-        C.id AS companionId, 
-        C.username AS companionUsername, 
-        C.firstName AS companionFirstName, 
-        C.lastName AS companionLastName, 
-        C.email AS companionEmail, 
-        C.avatar AS companionAvatar, 
-        C.createdAt AS companionCreatedAt, 
-        C.updatedAt AS companionUpdatedAt
-      FROM users U
-      LEFT JOIN entries E ON U.id = E.userId
-      LEFT JOIN usersEntriesCompanions UEC ON U.id = UEC.userId
-      LEFT JOIN users C ON UEC.entryId = C.id
-      WHERE U.id = ? AND U.active = 1
-    `,
+    `SELECT * FROM users WHERE id = ? AND active = 1`,
     [id]
   );
 
-  // Como id es único, solo habrá un registro por lo que nos quedamos con la primera posición
-  const userData = user[0];
+  // Si no existe el usuario, devolver null
+  if (!user[0]) return null;
 
-  // Crear un objeto para almacenar las entradas
-  const entries = {};
+  // Realizar la consulta para obtener las entradas del usuario
+  const [entries] = await pool.query(`SELECT * FROM entries WHERE userId = ?`, [
+    user[0].id,
+  ]);
 
-  // Recorrer los resultados y agregar las entradas al objeto
-  user.forEach((row) => {
-    if (!entries[row.entryId]) {
-      entries[row.entryId] = {
-        id: row.entryId,
-        title: row.entryTitle,
-        place: row.entryPlace,
-        description: row.entryDescription,
-        createdAt: row.entryCreatedAt,
-        updatedAt: row.entryUpdatedAt,
-        companions: [],
-      };
-    }
+  // Realizar la consulta para obtener los compañeros del usuario
+  const [companions] = await pool.query(
+    `SELECT U.id, U.username, U.firstName, U.lastName, U.avatar 
+    FROM usersEntriesCompanions UEC
+    LEFT JOIN users U ON UEC.userId = U.id
+    WHERE UEC.entryId IN (
+      SELECT id
+      FROM entries E
+      WHERE E.userId = ?
+    )
+    ORDER BY U.createdAt DESC`,
+    [user[0].id]
+  );
 
-    // Agregar el compañero a la entrada
-    if (row.companionId) {
-      entries[row.entryId].companions.push({
-        id: row.companionId,
-        username: row.companionUsername,
-        firstName: row.companionFirstName,
-        lastName: row.companionLastName,
-        email: row.companionEmail,
-        avatar: row.companionAvatar,
-        createdAt: row.companionCreatedAt,
-        updatedAt: row.companionUpdatedAt,
-      });
-    }
-  });
-
-  // Agregar las entradas al objeto de usuario
-  userData.entries = Object.values(entries);
-
-  return userData;
+  // Devolver el usuario con sus entradas y compañeros
+  return { ...user[0], entries, companions };
 };

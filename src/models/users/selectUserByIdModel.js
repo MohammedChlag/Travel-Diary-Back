@@ -18,6 +18,17 @@ export const selectUserByIdModel = async (id) => {
     user[0].id,
   ]);
 
+  // Realizar la consulta para obtener las fotos de cada entrada
+  const entriesWithPhotos = await Promise.all(
+    entries.map(async (entry) => {
+      const [photos] = await pool.query(
+        `SELECT * FROM photos WHERE entryId = ?`,
+        [entry.id]
+      );
+      return { ...entry, photos };
+    })
+  );
+
   // Realizar la consulta para obtener los compañeros del usuario
   const [companions] = await pool.query(
     `SELECT U.id, U.username, U.firstName, U.lastName, U.avatar 
@@ -33,5 +44,5 @@ export const selectUserByIdModel = async (id) => {
   );
 
   // Devolver el usuario con sus entradas y compañeros
-  return { ...user[0], entries, companions };
+  return { ...user[0], entries: entriesWithPhotos, companions };
 };

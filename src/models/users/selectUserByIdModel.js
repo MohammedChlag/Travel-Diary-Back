@@ -1,3 +1,5 @@
+import { getPool } from "../../db/getPool.js";
+
 export const selectUserByIdModel = async (id) => {
   // Tareas:
   // 1. Conectar con la base de datos

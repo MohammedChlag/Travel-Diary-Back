@@ -14,9 +14,18 @@ export const selectUserByIdModel = async (id) => {
   if (!user[0]) return null;
 
   // Realizar la consulta para obtener las entradas del usuario
-  const [entries] = await pool.query(`SELECT * FROM entries WHERE userId = ?`, [
-    user[0].id,
-  ]);
+  const [entries] = await pool.query(
+    `
+    SELECT E.*, U.username, 
+    U.avatar, ROUND(IFNULL(AVG(UEV.value), 0), 2) AS averageVote, IFNULL(COUNT(UEV.id), 0) AS votesCount
+    FROM entries E
+    LEFT JOIN usersEntriesVotes UEV ON E.id = UEV.entryId
+		LEFT JOIN users U ON E.userId = U.id
+    GROUP BY E.id
+		ORDER BY E.createdAt DESC
+    `,
+    [user[0].id]
+  );
 
   // Realizar la consulta para obtener las fotos de cada entrada
   const entriesWithPhotos = await Promise.all(

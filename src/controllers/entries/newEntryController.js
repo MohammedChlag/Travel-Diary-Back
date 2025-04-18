@@ -63,10 +63,8 @@ export const newEntryController = async (req, res, next) => {
     res.status(201).send({
       status: "ok",
       data: {
-        entry: {
-          ...entry,
-          photos: photosResult,
-        },
+        ...entry,
+        photos: photosResult,
       },
     });
     // res.status(201).send('Listo');

@@ -51,3 +51,13 @@ npm dev
 ### 5. Probar la API
 
 La aplicación estará disponible en http://localhost:3001. Puedes acceder a ella mediante un navegador o una herramienta de prueba de API como Postman.
+
+### 6. Rutas de la Api
+
+#### Rutas Usuarios
+
+![alt text](image.png)
+
+#### Rutas Entries
+
+![alt text](image-1.png)
